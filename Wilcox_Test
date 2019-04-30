@@ -1,0 +1,182 @@
+setwd("~/Documents/UoY/Dissertation/Results")
+
+library(raster)
+# Package to handle raster-formatted spatial data
+library(rasterVis)
+# The rasterVis package complements the raster package, providing a set of methods for enhanced visualization and interaction
+# Defines visualisation methods with 'levelplot'
+library(dismo)
+# Dismo has the SDM analyses for maxent and support vector machines used by R
+library(rgeos)
+# To define circles with a radius around the subsampled points
+# geos is a geometry engine, need to install package to access these capabilities (such as defining circumfrances)
+library(rJava)
+library(rgdal)
+# Provides access to projection/transformation operations from a different library
+# Coordinate referancing system**
+library(sp)
+# Coordinate referancing system
+library(ncdf4)
+# Opens access to read and write on netCDF files
+library(kernlab)
+# Required for support vector machines
+# installed and running BUT UNSURE of function
+library(grDevices)
+# For colouring maps
+library(colorRamps)
+#Allows easy construction of color palettes
+
+#Cockle Data
+#Load Rasters
+Before_Cockle<-raster("Cockle/pred7_me Cockle.tif")
+Lagoon_Cockle<-raster("Cockle/pred_lagoon Cockle.tif")
+Barrage_Cockle<-raster("Cockle/pred_barrage Cockle.tif")
+Cockle_vals<-getValues(Before_Cockle)
+Cockle_vals_L<-getValues(Lagoon_Cockle)
+Cockle_vals_B<-getValues(Barrage_Cockle)
+#Create Histograms of each (MUST SAVE SEPERATELY IN WINDOW)
+hist(Cockle_vals,main='Histogram of C. edule',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Cockle_vals_B,main='Histogram of C. edule_Bar',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Cockle_vals_L,main='Histogram of C. edule_Lag',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+#Wilcox Tests Barrage v Lagoon Cockle (medians of values)
+wilcox.test(Cockle_vals_B,Cockle_vals_L,conf.int = TRUE)
+median(Cockle_vals_B, na.rm = TRUE)
+median(Cockle_vals_L, na.rm=TRUE)
+#SUBTRACT TWO MEDIANS TO FIND DIFFERENCE -EACH TIME****
+#Wilcox Test Barrage v Current
+wilcox.test(Cockle_vals_B,Cockle_vals,conf.int = TRUE)
+median(Cockle_vals_B, na.rm = TRUE)
+median(Cockle_vals, na.rm=TRUE)
+#Wilcox Test Lagooon v Current
+wilcox.test(Cockle_vals_L,Cockle_vals,conf.int = TRUE)
+median(Cockle_vals_L, na.rm = TRUE)
+median(Cockle_vals, na.rm=TRUE)
+
+
+#Spire Shell Data
+#Load Rasters
+Before_Pout<-raster("Pout/pred8_me Pout.tif")
+Lagoon_Pout<-raster("Pout/pred_lagoon Pout.tif")
+Barrage_Pout<-raster("Pout/pred_barrage Pout.tif")
+Pout_vals<-getValues(Before_Pout)
+Pout_vals_L<-getValues(Lagoon_Pout)
+Pout_vals_B<-getValues(Barrage_Pout)
+#Create Histograms of each (MUST SAVE SEPERATELY IN WINDOW)
+hist(Pout_vals,main='Histogram of P. ulvae',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Pout_vals_B,main='Histogram of P. ulvae_Bar',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Pout_vals_L,main='Histogram of P. ulvae_Lag',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+#Wilcox Tests Barrage v Lagoon (medians of values)
+wilcox.test(Pout_vals_B,Pout_vals_L,conf.int = TRUE)
+median(Pout_vals_B, na.rm = TRUE)
+median(Pout_vals_L, na.rm=TRUE)
+#SUBTRACT TWO MEDIANS TO FIND DIFFERENCE -EACH TIME****
+#Wilcox Test Barrage v Current
+wilcox.test(Pout_vals_B,Pout_vals,conf.int = TRUE)
+median(Pout_vals_B, na.rm = TRUE)
+median(Pout_vals, na.rm=TRUE)
+#Wilcox Test Lagooon v Current
+wilcox.test(Pout_vals_L,Pout_vals,conf.int = TRUE)
+median(Pout_vals_L, na.rm = TRUE)
+median(Pout_vals, na.rm=TRUE)
+
+
+#Starfish Data
+#Load Rasters
+Before_Starfish<-raster("Starfish/pred3_me Starfish.tif")
+Lagoon_Starfish<-raster("Starfish/pred_lagoon Starfish.tif")
+Barrage_Starfish<-raster("Starfish/pred_barrage Starfish.tif")
+Starfish_vals<-getValues(Before_Starfish)
+Starfish_vals_L<-getValues(Lagoon_Starfish)
+Starfish_vals_B<-getValues(Barrage_Starfish)
+#Create Histograms of each (MUST SAVE SEPERATELY IN WINDOW)
+hist(Starfish_vals,main='Histogram of A. rubens',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Starfish_vals_B,main='Histogram of A. rubens_Bar',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Starfish_vals_L,main='Histogram of A. rubens_Lag',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+#Wilcox Tests Barrage v Lagoon (medians of values)
+wilcox.test(Starfish_vals_B,Starfish_vals_L,conf.int = TRUE)
+median(Starfish_vals_B, na.rm = TRUE)
+median(Starfish_vals, na.rm=TRUE)
+#SUBTRACT TWO MEDIANS TO FIND DIFFERENCE -EACH TIME****
+#Wilcox Test Barrage v Current
+wilcox.test(Starfish_vals_B,Starfish_vals,conf.int = TRUE)
+median(Starfish_vals_B, na.rm = TRUE)
+median(Starfish_vals, na.rm=TRUE)
+#Wilcox Test Lagooon v Current
+wilcox.test(Starfish_vals_L,Starfish_vals,conf.int = TRUE)
+median(Starfish_vals_L, na.rm = TRUE)
+median(Starfish_vals, na.rm=TRUE)
+
+
+#Whelk Data
+Before_Whelk<-raster("Whelk/pred2_me Whelk.tif")
+Lagoon_Whelk<-raster("Whelk/pred_lagoon Whelk.tif")
+Barrage_Whelk<-raster("Whelk/pred_barrage Whelk.tif")
+Whelk_vals<-getValues(Before_Whelk)
+Whelk_vals_L<-getValues(Lagoon_Whelk)
+Whelk_vals_B<-getValues(Barrage_Whelk)
+#Create Histograms of each (MUST SAVE SEPERATELY IN WINDOW)
+hist(Whelk_vals,main='Histogram of B. undatum',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Whelk_vals_B,main='Histogram of B. undatum_Bar',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Whelk_vals_L,main='Histogram of B. undatum_Lag',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+#Wilcox Tests Barrage v Lagoon (medians of values)
+wilcox.test(Whelk_vals_B,Whelk_vals_L,conf.int = TRUE)
+median(Whelk_vals_B, na.rm = TRUE)
+median(Whelk_vals_L, na.rm=TRUE)
+#SUBTRACT TWO MEDIANS TO FIND DIFFERENCE -EACH TIME****
+#Wilcox Test Barrage v Current
+wilcox.test(Whelk_vals_B,Whelk_vals,conf.int = TRUE)
+median(Whelk_vals_B, na.rm = TRUE)
+median(Whelk_vals_L, na.rm=TRUE)
+#Wilcox Test Lagooon v Current
+wilcox.test(Whelk_vals_L,Whelk_vals,conf.int = TRUE)
+median(Whelk_vals_L, na.rm = TRUE)
+median(Whelk_vals, na.rm=TRUE)
+
+#Worm Data
+Before_Worm<-raster("Worm/pred2_me Worm.tif")
+Lagoon_Worm<-raster("Worm/pred_lagoon Worm.tif")
+Barrage_Worm<-raster("Worm/pred_barrage Worm.tif")
+Worm_vals<-getValues(Before_Worm)
+Worm_vals_L<-getValues(Lagoon_Worm)
+Worm_vals_B<-getValues(Barrage_Worm)
+#Create Histograms of each (MUST SAVE SEPERATELY IN WINDOW)
+hist(Worm_vals,main='Histogram of N. hombergii',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Worm_vals_B,main='Histogram of N. hombergii_Bar',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Worm_vals_L,main='Histogram of N. hombergii_Lag',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+#Wilcox Tests Barrage v Lagoon (medians of values)
+wilcox.test(Worm_vals_B,Worm_vals_L,conf.int = TRUE)
+median(Worm_vals_B, na.rm = TRUE)
+median(Worm_vals_L, na.rm=TRUE)
+#SUBTRACT TWO MEDIANS TO FIND DIFFERENCE -EACH TIME****
+#Wilcox Test Barrage v Current
+wilcox.test(Worm_vals_B,Worm_vals,conf.int = TRUE)
+median(Worm_vals_B, na.rm = TRUE)
+median(Worm_vals, na.rm=TRUE)
+#Wilcox Test Lagooon v Current
+wilcox.test(Worm_vals_L,Worm_vals,conf.int = TRUE)
+median(Worm_vals_L, na.rm = TRUE)
+median(Worm_vals, na.rm=TRUE)
+
+
+#Pouting 2 Data
+#Load Rasters
+Before_Pout2<-raster("Pouting 2 Res/pred2_me Pouting 2.tif")
+Lagoon_Pout2<-raster("Pouting 2 Res/pred_lagoon Pouting 2.tif")
+Barrage_Pout2<-raster("Pouting 2 Res/pred_barrage Pouting 2.tif")
+Pout2_vals<-getValues(Before_Pout2)
+Pout2_vals_L<-getValues(Lagoon_Pout2)
+Pout2_vals_B<-getValues(Barrage_Pout2)
+#Create Histograms of each (MUST SAVE SEPERATELY IN WINDOW)
+hist(Pout2_vals,main='Histogram of T. luscus',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Pout2_vals_B,main='Histogram of T. luscus_Bar',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+hist(Pout2_vals_L,main='Histogram of T. luscus_Lag',xlab='Probability of Presence', border='black', col='goldenrod1',breaks=20 )
+
+#SUBTRACT TWO MEDIANS TO FIND DIFFERENCE -EACH TIME****
+#Wilcox Test Barrage v Current
+wilcox.test(Pout2_vals_B,Pout2_vals,conf.int = TRUE)
+median(Pout2_vals_B, na.rm = TRUE)
+median(Pout2_vals, na.rm=TRUE)
+#Wilcox Test Lagooon v Current
+wilcox.test(Pout2_vals_L,Pout2_vals,conf.int = TRUE)
+median(Pout2_vals_L, na.rm = TRUE)
+median(Pout2_vals, na.rm=TRUE)
